@@ -18,7 +18,6 @@ const EditRents = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const [rent, setRent] = useState({
-    date: "",
     customer_id: "",
     book_id: "",
   })
@@ -29,7 +28,6 @@ const EditRents = () => {
       try {
         const data = await getRent(id);
         setRent({
-          date: data.date,
           customer_id: data.customer.id,
           book_id: data.book.id,
         });
@@ -48,7 +46,7 @@ const EditRents = () => {
 
     try {
       setIsLoading(true);
-      await updateRent(id, rent.date, rent.customer_id, rent.book_id)
+      await updateRent(id, rent.customer_id, rent.book_id)
       toast.success(`Aluguel do Cliente de is ${rent.customer_id} editado com sucesso`);
       setIsLoading(false);
       navigate(`/rents/${id}`);
@@ -72,14 +70,6 @@ const EditRents = () => {
         <Card title={'Editar Aluguel'}>
 
           <form onSubmit={editRent}>
-
-            <InputField
-              label={"Data"}
-              type={"date"}
-              name={"date"}
-              value={rent.date}
-              onChange={(e) => setRent({ ...rent, date: e.target.value })}
-            />
 
             <InputField
               label={"ID Cliente"}

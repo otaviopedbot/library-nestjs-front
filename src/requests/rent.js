@@ -25,11 +25,11 @@ export const getRent = async (id) => {
     }
 };
 
-export const postRent = async (customer_id, book_id) => {
+export const postRent = async (user_id, book_id) => {
     try {
         await axios.post(`${url}/rents`, {
-            'customer_id': customer_id,
-            'book_id': book_id,
+            'user_id': Number(user_id),
+            'book_id': Number(book_id),
         }, { headers: authHeaderAdmin() });
     } catch (error) {
         console.log(error);
@@ -49,9 +49,9 @@ export const updateRent = async (id,customer_id, book_id) => {
     }
 };
 
-export const deleteRent = async (id) => {
+export const FinishRent = async (id) => {
     try {
-        await axios.delete(`${url}/rents/${id}`, { headers: authHeaderAdmin() });
+        await axios.patch(`${url}/rents/finish/${id}`, { headers: authHeaderAdmin() });
     } catch (error) {
         console.log(error);
         throw error;

@@ -249,7 +249,7 @@ const ViewBooks = () => {
                     <div className="space-y-4">
                       {review.map((review) => (
                         <div key={review.id} className="rounded-lg overflow-hidden shadow-md bg-white dark:bg-gray-700 text-gray-700 dark:text-white p-2">
-                          <h1>Usuário:<Link className="hover:text-blue-500 font-bold" to={`/users/${review.user_id}`}> {review.user.username}</Link></h1>
+                          <h1>Usuário:<Link className="hover:text-blue-500 font-bold" to={`/profile/${review.user_id}`}> {review.user.username}</Link></h1>
 
                           <p>Nota: {review.rating}/10</p>
 

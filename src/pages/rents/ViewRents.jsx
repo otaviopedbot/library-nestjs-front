@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getRent, deleteRent } from '../../requests/rent';
+import { getRent, FinishRent } from '../../requests/rent';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import Swal from "sweetalert2";
@@ -11,6 +11,7 @@ import Edit from '../../components/buttons/Edit'
 import Delete from '../../components/buttons/Delete'
 import ValidateData from '../../components/validation/ValidateData';
 import ValidateAdmin from '../../components/validation/ValidateAdmin';
+import CustomBlue from '../../components/buttons/CustomBlue';
 
 
 const ViewRents = () => {
@@ -46,9 +47,9 @@ const ViewRents = () => {
 
     if (confirmation.isConfirmed) {
       try {
-        await deleteRent(id);
+        await FinishRent(id);
         navigate('/rents')
-        toast.warn(`Aluguel ${data.id} removido com sucesso`)
+        toast.warn(`Aluguel ${data.id} finalizado com sucesso`)
       } catch (error) {
         toast.error(error.response.data.message);
         console.log(error)
@@ -72,9 +73,10 @@ const ViewRents = () => {
 
             <ul className="max-w space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400" key={data.id}>
               <li>ID: {data.id}</li>
-              <li>Data: {data.date}</li>
-              <li>ID Cliente: {data.customer.id}</li>
-              <li>Nome do Cliente: {data.customer.name}</li>
+              <li>Criado em: {data.createdAt}</li>
+              <li>Atualizado em: {data.updatedAt}</li>
+              <li>ID Cliente: {data.user.id}</li>
+              <li>Nome do Cliente: {data.user.complete_name}</li>
               <li>ID Livro: {data.book.id}</li>
               <li>Título do Livro: {data.book.title}</li>
             </ul>
@@ -94,8 +96,8 @@ const ViewRents = () => {
 
           </Link>
 
-          <span onClick={() => removeRent(data.id)}>
-            <Delete />
+          <span onClick={() => removeRent()}>
+            <CustomBlue title={"Finalizar"} />
           </span>
 
         </Card>

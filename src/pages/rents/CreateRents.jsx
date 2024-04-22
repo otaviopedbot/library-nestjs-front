@@ -13,8 +13,7 @@ import ValidateAdmin from '../../components/validation/ValidateAdmin';
 
 const CreateRents = () => {
 
-  const [date, setDate] = useState("")
-  const [customer_id, setCustomer_id] = useState("")
+  const [user_id, setUser_id] = useState("")
   const [book_id, setBook_id] = useState("")
 
   const [isLoading, setIsLoading] = useState(false)
@@ -23,16 +22,16 @@ const CreateRents = () => {
   const saveRent = async (e) => {
     e.preventDefault()
 
-    if (date === '' || customer_id === '' || book_id === '') {
+    if (user_id === '' || book_id === '') {
       toast.warn('Preencha todos os campos corretamente')
       return;
     }
 
     try {
       setIsLoading(true)
-      await postRent(date, customer_id, book_id)
-      toast.success(`Aluguel na data ${date} cadastrado com sucesso`);
-      navigate('/Rents')
+      await postRent(user_id, book_id)
+      toast.success(`Aluguel cadastrado com sucesso`);
+      navigate('/rents')
       setIsLoading(false)
     } catch (error) {
       toast.error(`Erro ao cadastrar Aluguel: ${error.response.data.message}`);
@@ -54,9 +53,7 @@ const CreateRents = () => {
 
         <form onSubmit={saveRent}>
 
-          <InputField label={"Data"} type={"date"} name={"date"} value={date} onChange={(e) => setDate(e.target.value)} />
-
-          <InputField label={"ID do Cliente"} type={"number"} name={"customer_id"} value={customer_id} onChange={(e) => setCustomer_id(e.target.value)} />
+          <InputField label={"ID do Cliente"} type={"number"} name={"user_id"} value={user_id} onChange={(e) => setUser_id(e.target.value)} />
 
           <InputField label={"ID do Livro"} type={"number"} name={"book_id"} value={book_id} onChange={(e) => setBook_id(e.target.value)} />
 
