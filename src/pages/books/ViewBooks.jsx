@@ -59,7 +59,6 @@ const ViewBooks = () => {
     cancelButtonColor: "#d33",
     confirmButtonText: "Voltar"
   }
-
   useEffect(() => {
     const showBook = async () => {
       try {
@@ -75,7 +74,6 @@ const ViewBooks = () => {
     showBook();
 
   }, [id]);
-
 
   const removeBook = async () => {
     const confirmation = await Swal.fire(configConfirmation);

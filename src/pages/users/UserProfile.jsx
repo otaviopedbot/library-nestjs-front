@@ -4,18 +4,18 @@ import Card from '../../components/Card';
 import { Link, useParams } from 'react-router-dom';
 import Return from '../../components/buttons/Return';
 import ErrorScreen from '../../components/ErrorScreen';
-import { getFavorite } from '../../requests/favorite';
 
 const Users = () => {
-  const { username } = useParams();
+  const { id } = useParams();
   const [user, setUser] = useState(null);
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userData = await getUser(username);
+        const userData = await getUser(id);
         setUser(userData);
+        setFavorites(userData.favorites)
       } catch (error) {
         console.error('Erro ao buscar usuário:', error);
         setUser(null);
@@ -23,19 +23,8 @@ const Users = () => {
     };
 
     fetchUser();
-  }, [username]);
+  }, [id]);
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const favoritesData = await getFavorite(user.id);
-        setFavorites(favoritesData);
-      } catch (error) {
-        console.error('Erro ao obter favoritos:', error);
-      }
-    };
-    fetchFavorites();
-  }, [user]);
 
   return user ? (
 

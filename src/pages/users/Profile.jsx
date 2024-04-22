@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AuthService from "../../services/authService";
 import { Link, useNavigate } from 'react-router-dom';
-import { getFavorite, deleteFavorite } from '../../requests/favorite';
+import { deleteFavorite } from '../../requests/favorite';
 import Swal from "sweetalert2";
 import { toast } from 'react-toastify';
 
@@ -24,29 +24,17 @@ const Profile = () => {
     confirmButtonText: "Sim, deletar!"
   }
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        if (!user) {
-          throw new Error('Usuário não está autenticado');
-        }
-        const favoritesData = await getFavorite(user.user.id);
-        setFavorites(favoritesData);
-      } catch (error) {
-        console.error('Erro ao buscar favoritos:', error);
-      }
-    };
+  setFavorites(user.user.favorites)
 
-    fetchFavorites();
-  }, [user]);
+  console.log(favorites)
 
   const removeFavorite = async (userId, bookId) => {
     const confirmation = await Swal.fire(configConfirmation);
     if (confirmation.isConfirmed) {
       try {
-        await deleteFavorite(userId, bookId);
+        await deleteFavorite(bookId);
         // Remover o favorito removido da lista de favoritos do estado
-        setFavorites(favorites.filter(favorite => favorite.favorite_id !== bookId));
+  
         toast.success(`Favorito removido com sucesso`);
       } catch (error) {
         toast.error(`Erro ao remover Favorito`);

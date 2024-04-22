@@ -4,10 +4,11 @@ import authHeaderAdmin from "../services/authHeaderAdmin";
 
 const url = import.meta.env.VITE_APIURL
 
-export const postFavorite = async (userId, bookId) => {
+export const postFavorite = async (user_id, book_id) => {
     try {
-        await axios.post(`${url}/users/${userId}/favorites`, { 
-            'book_id': bookId,
+        await axios.post(`${url}/favorites`, {
+            'user_id': Number(user_id),
+            'book_id': Number(book_id),
         }, { headers: authHeader() });
     } catch (error) {
         console.log(error);
@@ -15,19 +16,10 @@ export const postFavorite = async (userId, bookId) => {
     }
 };
 
-export const getFavorite = async (userId) => {
-    try {
-        const response = await axios.get(`${url}/users/${userId}/favorites`, { headers: authHeader() });
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-};
 
-export const deleteFavorite = async (userId, bookId) => {
+export const deleteFavorite = async (book_id) => {
     try {
-        await axios.delete(`${url}/users/${userId}/favorites/${bookId}`, { headers: authHeader() });
+        await axios.delete(`${url}/favorites/${book_id}`, { headers: authHeader() });
     } catch (error) {
         console.log(error);
         throw error;
