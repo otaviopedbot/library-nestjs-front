@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCustomer, deleteCustomer } from '../../requests/customer';
+import { getUser, deleteUser } from '../../requests/user';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import Swal from "sweetalert2";
@@ -29,15 +29,15 @@ const ViewCustomers = () => {
 
   useEffect(() => {
 
-    const showCustomer = async () => {
+    const showUser = async () => {
       try {
-        const result = await getCustomer(id);
+        const result = await getUser(id);
         setData(result);
       } catch (error) {
         toast.error(error.response.data.message);
       }
     };
-    showCustomer();
+    showUser();
 
   }, [id]);
 
@@ -47,9 +47,9 @@ const ViewCustomers = () => {
 
     if (confirmation.isConfirmed) {
       try {
-        await deleteCustomer(id);
-        navigate('/customers')
-        toast.warn(`Cliente ${data.name} removido com sucesso`)
+        await deleteUser(id);
+        navigate('/users')
+        toast.warn(`Usuário/Cliente ${data.name} removido com sucesso`)
       } catch (error) {
         toast.error(error.response.data.message);
         console.log(error)
@@ -62,7 +62,7 @@ const ViewCustomers = () => {
   return (
 
     <ValidateAdmin>
-      <ValidateData data={data} message={'Autor não encontrado'}>
+      <ValidateData data={data} message={'Usuário/cliente não encontrado'}>
 
       <div className='grid grid-cols-1 grid-rows-1 h-screen'>
       <div className='flex justify-center items-center'>
@@ -71,26 +71,20 @@ const ViewCustomers = () => {
 
           <ul className="max-w space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400" key={data.id}>
             <li>ID: {data.id}</li>
-            <li>Nome: {data.name}</li>
+            <li>Nome: {data.complete_name}</li>
             <li>Telefone: {data.phone}</li>
-            <li>Endereço: {data.adress}</li>
+            <li>E-mail: {data.email}</li>
+            <li>Endereço: {data.address}</li>
+            <li>Criado em: {data.createdAt}</li>
+            <li>Editado em: {data.updatedAt}</li>
           </ul>
 
           {/* botões: */}
 
-          <Link to={'edit'}>
-            <Edit />
-          </Link>
 
-
-          <Link to={'/customers'}>
+          <Link to={'/users'}>
             <Return />
           </Link>
-
-
-          <span onClick={() => removeCustomer(data.id)}>
-            <Delete />
-          </span>
 
         </Card>
 

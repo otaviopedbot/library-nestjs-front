@@ -4,16 +4,10 @@ import authHeaderAdmin from "../services/authHeaderAdmin";
 
 const url = import.meta.env.VITE_APIURL
 
-export const getAllUsers = async (page, pageSize) => {
+export const getAllUsers = async () => {
     try {
-        let response = ''
 
-        if (page && pageSize) {
-            response = await axios.get(`${url}/users?page=${page}&pageSize=${pageSize}`, { headers: authHeader() });
-        } else {
-            response = await axios.get(`${url}/users`, { headers: authHeader() });
-        }
-
+       const response = await axios.get(`${url}/users`, { headers: authHeader() });
         return response.data
     } catch (error) {
         console.log(error);
@@ -31,24 +25,16 @@ export const getUser = async (id) => {
     }
 };
 
-export const searchUser = async (username) => {
+export const updateUser = async (id, complete_name, username, phone, address, email, password, details) => {
     try {
-        const response = await axios.get(`${url}/users/search/${username}`, { headers: authHeader() });
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-};
-
-export const updateUser = async (id, username, email, password, image, details) => {
-    try {
-        await axios.put(`${url}/users/${id}`, {
-            'username': username,
-            'email': email,
-            'password': password,
-            'image': image,
-            'details': details,
+        await axios.patch(`${url}/users/${id}`, {
+            complete_name,
+            username,
+            phone,
+            address,
+            email,
+            password,
+            details
         }, { headers: authHeader() });
     } catch (error) {
         console.log(error);

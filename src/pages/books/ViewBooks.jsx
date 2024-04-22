@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getBook, deleteBook } from '../../requests/book';
-import { getReview, deleteReview, updateReview, postReview } from '../../requests/review';
+import { deleteReview, updateReview, postReview } from '../../requests/review';
 import { postFavorite, deleteFavorite } from '../../requests/favorite';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -28,8 +28,8 @@ const ViewBooks = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false)
-  const [book, setBook] = useState([]);
-  const [data, setData] = useState([]);
+  const [book, setBook] = useState({});
+  const [review, setReview] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(2); //Número de itens por página
   const [totalPages, setTotalPages] = useState(0);
@@ -65,27 +65,17 @@ const ViewBooks = () => {
       try {
         const result = await getBook(id);
         setBook(result)
+        setReview(result.reviews)
+        setTotalPages(Math.ceil(result.reviews.length / pageSize));
+
       } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error);
       }
     };
     showBook();
 
   }, [id]);
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await getReview(id, page, pageSize);
-        setData(response.data.data);
-        setTotalPages(Math.ceil(response.data.total_items / pageSize));
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    };
-
-    fetchReviews();
-  }, [page, pageSize]);
 
   const removeBook = async () => {
     const confirmation = await Swal.fire(configConfirmation);
@@ -105,8 +95,7 @@ const ViewBooks = () => {
     e.preventDefault()
     try {
       setIsLoading(true)
-      console.log(id, user.user.id, body, rate)
-      await postReview(id, user.user.id, body, rate)
+      await postReview(book.id, user.user.id, body, rate)
       toast.success(`Livro ${book.title} avaliado com sucesso`);
       setPage(1)
       setIsLoading(false)
@@ -119,11 +108,11 @@ const ViewBooks = () => {
     }
   };
 
-  const removeReview = async () => {
+  const removeReview = async (id) => {
     const confirmation = await Swal.fire(configConfirmation);
     if (confirmation.isConfirmed) {
       try {
-        await deleteReview(id, user.user.id);
+        await deleteReview(id);
         setPage(1)
         toast.success(`Avaliação apagada com sucesso`);
         window.location.reload()
@@ -169,8 +158,6 @@ const ViewBooks = () => {
     await Swal.fire(configSynopsis);
   }
 
-
-
   return (
     <ValidateUser>
       <ValidateData data={book} message={'Livro não encontrado'}>
@@ -215,7 +202,6 @@ const ViewBooks = () => {
                   <li>Numero de páginas: {book.page}</li>
                   <li>Quantidade disponível: {book.quantity}</li>
                   <li>Autor(a): {book.author && book.author.name}</li>
-                  <li>Estante: {book.bookshelve && book.bookshelve.name}</li>
                 </ul>
 
                 {/* botões */}
@@ -256,29 +242,27 @@ const ViewBooks = () => {
 
                 <div className="p-6 text-center">
 
-
-                  {book.length != 0 && !data ? (
+                  {review && review.length === 0 ? (
                     <p>Nenhuma avaliação registrada para este livro ainda.</p>
                   ) : (
 
                     <div className="space-y-4">
-                      {data.map((review) => (
+                      {review.map((review) => (
                         <div key={review.id} className="rounded-lg overflow-hidden shadow-md bg-white dark:bg-gray-700 text-gray-700 dark:text-white p-2">
-                          <h1>Usuário:<Link className="hover:text-blue-500 font-bold" to={`/users/${review.username}`}> {review.username}</Link></h1>
+                          <h1>Usuário:<Link className="hover:text-blue-500 font-bold" to={`/users/${review.user_id}`}> {review.user.username}</Link></h1>
 
                           <p>Nota: {review.rating}/10</p>
 
                           <p>{review.body}</p>
 
                           {user.user.id === review.user_id && (
-                            <span onClick={removeReview}>
+                            <span onClick={() => { removeReview(review.id) }}>
                               <Delete size={4} />
                             </span>
                           )}
 
                         </div>
                       ))}
-
                       <Pagination totalPages={totalPages} setPage={setPage} page={page} />
                     </div>
                   )}

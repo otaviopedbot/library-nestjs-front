@@ -9,6 +9,7 @@ import CustomBlue from './buttons/CustomBlue';
 import CustomPurple from './buttons/CustomPurple';
 import Pagination from './Pagination';
 
+
 const Table = ({ titles, tableTitle, btnTitle, data, totalPages, setPage, page }) => {
 
     return (
@@ -18,7 +19,7 @@ const Table = ({ titles, tableTitle, btnTitle, data, totalPages, setPage, page }
                     <caption className="p-5 text-lg font-semibold text-center rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                         Lista de {tableTitle}
 
-                        {user && user.user.is_admin == 1 && (
+                        {user && user.user.is_admin == 1 && tableTitle != 'Usuários / Clientes' &&(
                             <div className="mt-5">
                                 <Link to={'create'}>
                                     <CustomBlue title={btnTitle} />
@@ -43,23 +44,26 @@ const Table = ({ titles, tableTitle, btnTitle, data, totalPages, setPage, page }
                     <tbody>
                         {data.map((rowData) => (
                             <tr key={rowData.id} className={`text-center odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700`}>
-                                {Object.entries(rowData).map(([key, value], colIndex) => key !== 'id' && (
-                                    <td key={colIndex} className="px-4 lg:px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{value}</td>
-                                ))}
+                                {Object.entries(rowData).map(([key, value], colIndex) => {
+                                    if (key !== 'id' && key !== 'cover' && key !== 'updatedAt' && key !== 'finished_in' && key !== 'synopsis' && key !== 'address' && key !== 'details' && key !== 'image' && key !== 'is_admin' && key !== 'password') {
+                                        return (
+                                            <td key={colIndex} className="px-4 lg:px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{value}</td>
+                                        );
+                                    } else {
+                                        return null;
+                                    }
+                                })}
 
                                 {user && (
-
                                     <td className="px-2 py-4">
                                         <Link to={`${rowData.id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                             <CustomPurple title={"Sobre"} />
                                         </Link>
                                     </td>
-
                                 )}
-
                             </tr>
-
                         ))}
+
 
                     </tbody>
 

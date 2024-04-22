@@ -4,17 +4,13 @@ import authHeaderAdmin from "../services/authHeaderAdmin";
 
 const url = import.meta.env.VITE_APIURL
 
-export const getAllAuthors = async (page, pageSize) => {
+export const getAllAuthors = async () => {
     try {
-        let response = ''
 
-        if (page && pageSize) {
-            response = await axios.get(`${url}/authors?page=${page}&pageSize=${pageSize}`, { headers: authHeader() });
-        } else {
-            response = await axios.get(`${url}/authors`, { headers: authHeader() });
-        }
+        const response = await axios.get(`${url}/authors`, { headers: authHeader() });
 
         return response.data
+
     } catch (error) {
         console.log(error)
         throw error;
@@ -41,7 +37,7 @@ export const postAuthor = async (name) => {
 
 export const updateAuthor = async (id, name) => {
     try {
-        await axios.put(`${url}/authors/${id}`, { 'name': name }, { headers: authHeaderAdmin() });
+        await axios.patch(`${url}/authors/${id}`, { 'name': name }, { headers: authHeaderAdmin() });
     } catch (error) {
         throw error;
     }

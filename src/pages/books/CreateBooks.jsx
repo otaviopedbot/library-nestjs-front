@@ -26,14 +26,10 @@ const CreateBooks = () => {
   const saveBook = async (e) => {
     e.preventDefault()
 
-    // if (title === '' || page === '' || quantity === '' || author_id === '' || bookshelve_id === '') {
-    //   toast.warn('Preencha todos os campos corretamente')
-    //   return;
-    // }
 
     try {
       setIsLoading(true)
-      await postBook(title, page, quantity, author_id, bookshelve_id, synopsis, cover)
+      await postBook(title, page, quantity, author_id, bookshelve_id, synopsis)
       toast.success(`Livro ${title} cadastrado com sucesso`);
       navigate('/books')
       setIsLoading(false)
@@ -49,44 +45,40 @@ const CreateBooks = () => {
 
     <ValidateAdmin>
 
-<div className='grid grid-cols-1 grid-rows-1 h-screen'>
-      <div className='flex justify-center items-center'>
+      <div className='grid grid-cols-1 grid-rows-1 h-screen'>
+        <div className='flex justify-center items-center'>
 
-      <Card title={'Novo Livro'}>
+          <Card title={'Novo Livro'}>
 
-        <form onSubmit={saveBook}>
+            <form onSubmit={saveBook}>
 
-          <InputField label={"Título"} type={"text"} name={"title"} value={title} onChange={(e) => setTitle(e.target.value)} />
+              <InputField label={"Título"} type={"text"} name={"title"} value={title} onChange={(e) => setTitle(e.target.value)} />
 
-          <InputField label={"Capa"} type={"text"} name={"cover"} value={cover} onChange={(e) => setCover(e.target.value)} />
+              <InputField label={"Sinópse"} type={"text"} name={"synopsis"} value={synopsis} onChange={(e) => setSynopsis(e.target.value)} />
 
-          <InputField label={"Sinópse"} type={"text"} name={"synopsis"} value={synopsis} onChange={(e) => setSynopsis(e.target.value)} />
+              <InputField label={"Páginas"} type={"number"} name={"pages"} value={page} onChange={(e) => setPage(e.target.value)} />
 
-          <InputField label={"Páginas"} type={"number"} name={"pages"} value={page} onChange={(e) => setPage(e.target.value)} />
+              <InputField label={"Quantidade"} type={"number"} name={"quantity"} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
 
-          <InputField label={"Quantidade"} type={"number"} name={"quantity"} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+              <InputField label={"ID do Autor"} type={"number"} name={"autor_id"} value={author_id} onChange={(e) => setAuthor_id(e.target.value)} />
 
-          <InputField label={"ID do Autor"} type={"number"} name={"autor_id"} value={author_id} onChange={(e) => setAuthor_id(e.target.value)} />
+              {/* botões */}
 
-          <InputField label={"ID da Estante"} type={"number"} name={"bookshelve_id"} value={bookshelve_id} onChange={(e) => setBookshelve_id(e.target.value)} />
+              {!isLoading && (
 
-          {/* botões */}
+                <Check />
 
-          {!isLoading && (
+              )}
 
-            <Check />
+              <Link to={'/Books'}>
+                <Return />
+              </Link>
 
-          )}
+            </form>
 
-          <Link to={'/Books'}>
-            <Return />
-          </Link>
+          </Card>
 
-        </form>
-
-      </Card>
-
-      </div>
+        </div>
       </div>
 
     </ValidateAdmin>

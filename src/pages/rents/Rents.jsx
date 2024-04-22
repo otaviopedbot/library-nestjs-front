@@ -8,17 +8,22 @@ import ValidateData from '../../components/validation/ValidateData';
 import ValidateAdmin from '../../components/validation/ValidateAdmin'
 
 const Rents = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(5); // Número de itens por página
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getAllRents(page, pageSize);
-        setData(response.data);
-        setTotalPages(Math.ceil(response.total_items / pageSize));
+        const response = await getAllRents();
+        console.log(response)
+
+        setTotalPages(Math.ceil(response.length/pageSize))
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const slicedData = response.slice(startIndex, endIndex);
+        setData(slicedData);
       } catch (error) {
         toast.error(error.response.data.message);
       }
@@ -27,14 +32,14 @@ const Rents = () => {
     fetchData();
   }, [page, pageSize]);
 
-  const titles = ['Data', 'Título do Livro', 'Nome Cliente'];
+  const titles = ['ID do Usuário/cliente', 'ID do livro', 'Criado em'];
 
   return (
 
     <ValidateAdmin>
       <ValidateData data={data} message={"Não foi possivel obter Aluguéis"}>
 
-        <Table data={data} titles={titles} tableTitle={'Alugueis'} btnTitle={'Novo Aluguel'} totalPages={totalPages} setPage={setPage} page={page} />
+      <Table data={data} titles={titles} tableTitle={'Aluguéis'} btnTitle={'Novo aluguel'} totalPages={totalPages} setPage={setPage} page={page} />
 
       </ValidateData>
     </ValidateAdmin>

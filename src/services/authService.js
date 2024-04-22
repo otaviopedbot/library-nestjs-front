@@ -2,16 +2,19 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_APIURL;
 
-const Register = (username, email, password) => {
+const Register = (complete_name, username, email, password, address, phone) => {
   return axios
-    .post(`${API_URL}/users/register`, {
+    .post(`${API_URL}/auth/register`, {
+      complete_name,
       username,
+      phone,
+      address,
       email,
-      password,
+      password
     })
     .then((response) => {
       if (response.data.token) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("user", JSON.stringify(response));
       }
 
       return response.data;
@@ -20,7 +23,7 @@ const Register = (username, email, password) => {
 
 const Login = (email, password) => {
   return axios
-    .post(`${API_URL}/users/login`, {
+    .post(`${API_URL}/auth/login/`, {
       email,
       password,
     })

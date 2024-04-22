@@ -9,7 +9,7 @@ export const getAllBooks = async (page, pageSize) => {
         let response = ''
 
         if (page && pageSize) {
-            response = await axios.get(`${url}/books?page=${page}&pageSize=${pageSize}`, { headers: authHeader() });
+            response = await axios.get(`${url}/books`, { headers: authHeader() });
         } else {
             response = await axios.get(`${url}/books`, { headers: authHeader() });
         }
@@ -31,16 +31,14 @@ export const getBook = async (id) => {
     }
 };
 
-export const postBook = async (title, page, quantity, author_id, bookshelve_id, synopsis, cover) => {
+export const postBook = async (title, page, quantity, author_id, synopsis) => {
     try {
         await axios.post(`${url}/books`, {
             'title': title,
-            'page': page,
-            'quantity': quantity,
-            'author_id': author_id,
-            'bookshelve_id': bookshelve_id,
+            'page': Number(page),
+            'quantity': Number(quantity),
+            'author_id': Number(author_id),
             'synopsis': synopsis,
-            'cover': cover
         }, { headers: authHeaderAdmin() });
     } catch (error) {
         console.log(error);
@@ -48,21 +46,48 @@ export const postBook = async (title, page, quantity, author_id, bookshelve_id, 
     }
 };
 
-export const updateBook = async (id, title, page, quantity, author_id, bookshelve_id, synopsis, cover) => {
+export const updateBook = async (id, title, page, quantity, author_id, synopsis) => {
     try {
-        await axios.put(`${url}/books/${id}`, {
-            'title': title,
-            'page': page,
-            'quantity': quantity,
-            'synopsis': synopsis,
-            'author_id': author_id,
-            'bookshelve_id': bookshelve_id,
-            'cover': cover,
+        await axios.patch(`${url}/books/${id}`, {
+            title,
+            page: Number(page),
+            quantity: Number(quantity),
+            synopsis,
+            author_id: Number(author_id),
         }, { headers: authHeaderAdmin() });
     } catch (error) {
         console.log(error);
         throw error;
     }
+
+}
+
+export const updateBookCover = async (id, cover) => {
+
+
+    try {
+    
+        const formData = new FormData();
+        formData.append('cover', cover);
+    
+        const response = await axios.patch(`${url}/books/cover/${id}`, formData, {
+
+        
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+
+          headers: authHeaderAdmin()
+
+
+        });
+    
+        return response.data;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+
 
 }
 
@@ -73,5 +98,4 @@ export const deleteBook = async (id) => {
         console.log(error);
         throw error;
     }
-
 }

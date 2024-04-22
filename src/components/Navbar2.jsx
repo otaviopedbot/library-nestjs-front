@@ -77,9 +77,8 @@ export default function Component() {
             <Navbar.Collapse>
                 <Navbar.Link href="/authors">Autores</Navbar.Link>
                 <Navbar.Link href="/books">Livros</Navbar.Link>
-                <Navbar.Link href="/bookshelves">Estantes</Navbar.Link>
                 {currentUser && currentUser.user.is_admin == 1 && (
-                    <Navbar.Link href="/customers">Clientes</Navbar.Link>
+                    <Navbar.Link href="/users">Clientes / Usuários</Navbar.Link>
                 )}
                 {currentUser && currentUser.user.is_admin == 1 && (
                     <Navbar.Link href="/rents">Aluguéis</Navbar.Link>

@@ -4,21 +4,26 @@ import { toast } from 'react-toastify';
 
 //componentes:
 import Table from '../../components/Table';
-import Pagination from '../../components/Pagination';
 import ValidateData from '../../components/validation/ValidateData'
 
 const Books = () => {
   const [data, setData] = useState(null);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(5); // Número de itens por página
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getAllBooks(page, pageSize);
-        setData(response.data);
-        setTotalPages(Math.ceil(response.total_items / pageSize));
+        const response = await getAllBooks();
+
+        console.log(response)
+
+        setTotalPages(Math.ceil(response.length/pageSize))
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const slicedData = response.slice(startIndex, endIndex);
+        setData(slicedData);
       } catch (error) {
         toast.error(error.response.data.message);
       }
@@ -27,7 +32,7 @@ const Books = () => {
     fetchData();
   }, [page, pageSize]);
 
-  const titles = ['Título', 'páginas', 'Quantidade', 'Autor', 'Estante'];
+  const titles = ['Título', 'Autor ID', 'Paginas', 'quantidade'];
 
   return (
 

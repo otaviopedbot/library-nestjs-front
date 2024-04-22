@@ -4,16 +4,10 @@ import authHeaderAdmin from "../services/authHeaderAdmin";
 
 const url = import.meta.env.VITE_APIURL
 
-export const getAllRents = async (page, pageSize) => {
+export const getAllRents = async () => {
     try {
-        let response = ''
+        const response = await axios.get(`${url}/rents`, { headers: authHeader() });
 
-        if (page && pageSize) {
-            response = await axios.get(`${url}/rents?page=${page}&pageSize=${pageSize}`, { headers: authHeader() });
-        } else {
-            response = await axios.get(`${url}/rents`, { headers: authHeader() });
-        }
-        
         return response.data
     } catch (error) {
         console.log(error);
@@ -31,10 +25,9 @@ export const getRent = async (id) => {
     }
 };
 
-export const postRent = async (date, customer_id, book_id) => {
+export const postRent = async (customer_id, book_id) => {
     try {
-        await axios.post(`${url}/rents`, { 
-            'date': date,
+        await axios.post(`${url}/rents`, {
             'customer_id': customer_id,
             'book_id': book_id,
         }, { headers: authHeaderAdmin() });
@@ -44,10 +37,9 @@ export const postRent = async (date, customer_id, book_id) => {
     }
 };
 
-export const updateRent = async (id, date, customer_id, book_id) => {
+export const updateRent = async (id,customer_id, book_id) => {
     try {
-        await axios.put(`${url}/rents/${id}`, { 
-            'date': date,
+        await axios.put(`${url}/rents/${id}`, {
             'customer_id': customer_id,
             'book_id': book_id,
         }, { headers: authHeaderAdmin() });

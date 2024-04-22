@@ -9,9 +9,14 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
-import Profile from './pages/users/Profile';
-import EditProfile from './pages/users/EditProfile';
+// usuários
 import Users from './pages/users/Users';
+import ShowUserAdmin from './pages/users/ShowUserAdmin';
+
+import Profile from './pages/users/Profile';
+import UserProfile from './pages/users/UserProfile';
+import EditProfile from './pages/users/EditProfile';
+
 
 import Authors from './pages/authors/Authors';
 import CreateAuthors from './pages/authors/CreateAuthors';
@@ -23,20 +28,10 @@ import CreateBooks from './pages/books/CreateBooks';
 import ViewBooks from './pages/books/ViewBooks';
 import EditBooks from './pages/books/EditBooks';
 
-import Bookshelves from './pages/bookshelves/Bookshelves';
-import CreateBookshelves from './pages/bookshelves/CreateBookshelves';
-import ViewBookshelves from './pages/bookshelves/ViewBookshelves';
-import EditBookshelves from './pages/bookshelves/EditBookshelves';
-
 import Rents from './pages/rents/Rents';
 import CreateRents from './pages/rents/CreateRents';
 import ViewRents from './pages/rents/ViewRents';
 import EditRents from './pages/rents/EditRents';
-
-import Customers from './pages/customers/Customers';
-import CreateCustomers from './pages/customers/CreateCustomers';
-import ViewCustomers from './pages/customers/ViewCustomers';
-import EditCustomers from './pages/customers/EditCustomers';
 
 
 //componentes:
@@ -65,17 +60,6 @@ function App() {
           <Route path="/books/create" element={<CreateBooks />} />
           <Route path="/books/:id/edit" element={<EditBooks />} />
 
-          {/* bookshelves */}
-          <Route path="/bookshelves" element={<Bookshelves />} />
-          <Route path="/bookshelves/:id" element={<ViewBookshelves />} />
-          <Route path="/bookshelves/create" element={<CreateBookshelves />} />
-          <Route path="/bookshelves/:id/edit" element={<EditBookshelves />} />
-
-          {/* customers */}
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/customers/:id" element={<ViewCustomers />} />
-          <Route path="/customers/create" element={<CreateCustomers />} />
-          <Route path="/customers/:id/edit" element={<EditCustomers />} />
 
           {/* Rents */}
           <Route path="/rents" element={<Rents />} />
@@ -88,14 +72,16 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           {/* user */}
+
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/:id" element={<ShowUserAdmin />} />
+
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<UserProfile />} />
           <Route path="/profile/edit" element={<EditProfile />} />
 
-          {/* user search */}
-          <Route path="/users/:username" element={<Users />} />
-
         </Routes>
-        
+
       </BrowserRouter>
       <Footer />
       <ToastContainer
