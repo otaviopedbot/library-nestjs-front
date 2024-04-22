@@ -24,7 +24,13 @@ const Profile = () => {
     confirmButtonText: "Sim, deletar!"
   }
 
-  setFavorites(user.user.favorites)
+
+  useEffect(() => {
+    const test = async () => {
+      setFavorites(user.user.favorites)
+    };
+
+}, [user]);
 
   console.log(favorites)
 

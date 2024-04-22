@@ -73,7 +73,7 @@ const EditBooks = () => {
   return (
     <ValidateData data={book} message={'Livro não encontrado'}>
       <ValidateAdmin>
-        <div className="grid grid-cols-1 grid-rows-1 h-screen">
+        <div className="grid grid-cols-1 grid-rows-1 h-screen mt-20 mb-20">
           <div className="flex justify-center items-center">
             <Card title={'Editar Livro'}>
               <form onSubmit={editBook} encType="multipart/form-data">

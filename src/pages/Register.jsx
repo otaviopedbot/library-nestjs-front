@@ -34,7 +34,8 @@ const Login = () => {
       await AuthService.Register( complete_name, username, email, password, address, phone ).then(
         () => {
           setIsLoading(true)
-          toast.success(`Usuário ${username} cadastrado com sucesso`);
+          toast.success(`Usuário cadastrado com sucesso`);
+          navigate('/')
           setIsLoading(false)
         },
         (error) => {

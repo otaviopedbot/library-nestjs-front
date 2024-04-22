@@ -7,7 +7,7 @@ const url = import.meta.env.VITE_APIURL
 export const getAllUsers = async () => {
     try {
 
-       const response = await axios.get(`${url}/users`, { headers: authHeader() });
+        const response = await axios.get(`${url}/users`, { headers: authHeader() });
         return response.data
     } catch (error) {
         console.log(error);
@@ -30,16 +30,45 @@ export const updateUser = async (id, complete_name, username, phone, address, em
         await axios.patch(`${url}/users/${id}`, {
             complete_name,
             username,
-            phone,
+            phone: phone,
             address,
             email,
             password,
             details
-        }, { headers: authHeader() });
+        }, {
+
+
+            headers: authHeader()
+        });
     } catch (error) {
         console.log(error);
         throw error;
     }
+}
+
+export const updateUserImage = async (id, image) => {
+    try {
+
+        const formData = new FormData();
+        formData.append('image', image);
+
+        const response = await axios.patch(`${url}/users/image/${id}`, formData, {
+
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+
+            headers: authHeaderAdmin()
+
+        });
+        return response.data
+
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
+
 }
 
 export const deleteUser = async (id) => {
