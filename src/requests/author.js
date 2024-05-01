@@ -52,7 +52,8 @@ export const getAuthor = async (id) => {
                 headers: authHeader(),
                 "Content-Type": "application/json"
             });
-        return response.data;
+
+        return response.data.data.showAuthor;
     } catch (error) {
         throw error;
     }
@@ -76,7 +77,6 @@ export const postAuthor = async (name) => {
         name
     }
 
-
     try {
         await axios.post(url, { query, variables }, { headers: authHeaderAdmin() });
     } catch (error) {
@@ -89,32 +89,48 @@ export const updateAuthor = async (id, name) => {
 
     const query = `
   
-    mutation Update($name: String!, $id: Number!){
+    mutation UpdateAuthor($name: String!, $id: Float!){
       updatePartialAuthor(id: $id, data: {
         name: $name
       }){
         name
       }
-        
     }
   
+
     `;
 
     const variables = {
-        id,
+        id: parseInt(id),
         name
     }
 
     try {
-        await axios.post(url, { query, variables }, { headers: authHeaderAdmin() });
+        const response = await axios.post(url, { query, variables }, { headers: authHeaderAdmin(),  "Content-Type": "application/json" });
+
     } catch (error) {
         throw error;
     }
 }
 
 export const deleteAuthor = async (id) => {
+
+
+    const query = `
+  
+    mutation deleteAuthor($id: Float!){
+      deleteAuthor(id: $id)
+    }
+
+    `;
+
+    const variables = {
+        id: parseInt(id),
+    }
+
+
     try {
-        await axios.delete(`${url}/authors/${id}`, { headers: authHeaderAdmin() });
+        await axios.post(url, {query, variables},  { headers: authHeaderAdmin() });
     } catch (error) {
         throw error;
     }
