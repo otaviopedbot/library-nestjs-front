@@ -4,6 +4,8 @@ import authHeaderAdmin from "../services/authHeaderAdmin";
 
 const url = import.meta.env.VITE_APIURL
 
+const urlUpload = "http://localhost:3000/upload"
+
 export const getAllUsers = async () => {
 
     const query = `
@@ -77,7 +79,7 @@ export const getUser = async (id) => {
 };
 
 export const updateUser = async (id, complete_name, username, phone, address, email, password, details) => {
-   
+
     const query = `
   
     mutation UpdateUser($id: Float!, $complete_name: String, $username: String, $phone: String, $address: String, $email: String, $password: String, $details: String){
@@ -108,7 +110,7 @@ export const updateUser = async (id, complete_name, username, phone, address, em
     }
 
     try {
-        const response = await axios.post(url, { query, variables }, { headers: authHeaderAdmin(),  "Content-Type": "application/json" });
+        const response = await axios.post(url, { query, variables }, { headers: authHeaderAdmin(), "Content-Type": "application/json" });
 
         console.log(response)
 
@@ -117,13 +119,15 @@ export const updateUser = async (id, complete_name, username, phone, address, em
     }
 }
 
-export const updateUserImage = async (id, image) => {
+export const updateUserImage = async (id, cover) => {
+
     try {
-
         const formData = new FormData();
-        formData.append('image', image);
+        formData.append('cover', cover);
+        formData.append('type', "user");
+        formData.append('id', id);
 
-        const response = await axios.patch(`${url}/users/image/${id}`, formData, {
+        const response = await axios.post(`${urlUpload}`, formData, {
 
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -132,13 +136,12 @@ export const updateUserImage = async (id, image) => {
             headers: authHeaderAdmin()
 
         });
-        return response.data
 
+        return response.data;
     } catch (error) {
         console.log(error);
         throw error;
     }
-
 
 }
 
@@ -158,7 +161,7 @@ export const deleteUser = async (id) => {
 
 
     try {
-        await axios.post(url, {query, variables},  { headers: authHeaderAdmin() });
+        await axios.post(url, { query, variables }, { headers: authHeaderAdmin() });
     } catch (error) {
         throw error;
     }

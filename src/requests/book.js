@@ -4,6 +4,8 @@ import authHeaderAdmin from "../services/authHeaderAdmin";
 
 const url = import.meta.env.VITE_APIURL
 
+const urlUpload = "http://localhost:3000/upload"
+
 export const getAllBooks = async (page, pageSize) => {
     const query = `
     
@@ -157,19 +159,18 @@ export const updateBookCover = async (id, cover) => {
 
 
     try {
-    
         const formData = new FormData();
         formData.append('cover', cover);
+        formData.append('type', "book");
+        formData.append('id', id);
     
-        const response = await axios.patch(`${url}/books/cover/${id}`, formData, {
-
+        const response = await axios.post(`${urlUpload}`, formData, {
         
           headers: {
             'Content-Type': 'multipart/form-data',
           },
 
           headers: authHeaderAdmin()
-
 
         });
     
