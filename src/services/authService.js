@@ -6,7 +6,7 @@ const API_URL = import.meta.env.VITE_APIURL;
 const Register = async (complete_name, username, email, password, address, phone) => {
 
   const query = `
-  
+
   mutation Register($complete_name: String!, $username: String!, $email: String!, $password: String!, $address: String!, $phone: String!){
     registerUser(data: {
       complete_name: $complete_name
@@ -19,23 +19,22 @@ const Register = async (complete_name, username, email, password, address, phone
       token
       user{
         id
-        complete_name
-        phone
-        address
         username
         email
         password
-        is_admin
-        image
+        complete_name
+        address
+        phone
         details
-      favorites{
-          id
+        image
+        is_admin
+        favorites{
           book{
             title
           }
-          
         }
       }
+    }
   }
 
   `;
@@ -49,7 +48,9 @@ const Register = async (complete_name, username, email, password, address, phone
     phone
   }
 
-  const response = axios.post(API_URL, { query, variables })
+  const response = await axios.post(API_URL, { query, variables })
+
+  console.log(response)
 
     // .then((response) => {
 
@@ -65,7 +66,7 @@ const Login = async (email, password) => {
 
 
   const query = `
-  
+
   mutation Login($email: String!, $password: String!){
     login(data: {
       email: $email
@@ -83,12 +84,14 @@ const Login = async (email, password) => {
         is_admin
         image
         details
-      favorites{
+        favorites{
           id
+          book_id
+          user_id
           book{
             title
           }
-          
+
         }
       }
     }

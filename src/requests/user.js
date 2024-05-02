@@ -53,6 +53,7 @@ export const getUser = async (id) => {
             updatedAt
             favorites{
                 id
+                book_id
                 book{
                     title
                 }

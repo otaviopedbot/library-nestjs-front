@@ -11,12 +11,12 @@ import InputField from '../components/InputField'
 
 const Login = () => {
 
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState("")
-  const [address, setAddress] = useState("")
-  const [complete_name, setComplete_name] = useState("")
-  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState()
+  const [email, setEmail] = useState()
+  const [phone, setPhone] = useState()
+  const [address, setAddress] = useState()
+  const [complete_name, setComplete_name] = useState()
+  const [password, setPassword] = useState()
 
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()

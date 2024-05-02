@@ -30,6 +30,8 @@ const Users = () => {
 
   }, [id]);
 
+  console.log(favorites)
+
 
   return user ? (
 
@@ -48,7 +50,7 @@ const Users = () => {
             <ul>
               {favorites.map((favorite) => (
                 <li key={favorite.favorite_id} className="mt-2 max-w space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
-                  <Link to={`/books/${favorite.book.id}`}>
+                  <Link to={`/books/${favorite.book_id}`}>
                     {favorite.book.title}
                   </Link>
                 </li>

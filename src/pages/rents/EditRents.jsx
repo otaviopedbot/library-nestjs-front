@@ -18,7 +18,7 @@ const EditRents = () => {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const [rent, setRent] = useState({
-    customer_id: "",
+    user_id: "",
     book_id: "",
   })
 
@@ -28,7 +28,7 @@ const EditRents = () => {
       try {
         const data = await getRent(id);
         setRent({
-          customer_id: data.user_id,
+          user_id: data.user_id,
           book_id: data.book_id,
         });
       } catch (error) {
@@ -39,6 +39,8 @@ const EditRents = () => {
     showRent();
 
   }, [id]);
+
+  console.log(rent)
 
   const editRent = async (e) => {
 
@@ -83,8 +85,8 @@ const EditRents = () => {
               label={"ID Cliente"}
               type={"number"}
               name={"customer_id"}
-              value={rent.customer_id}
-              onChange={(e) => setRent({ ...rent, customer_id: e.target.value })}
+              value={rent.user_id}
+              onChange={(e) => setRent({ ...rent, user_id: e.target.value })}
             />
 
             <InputField
