@@ -34,7 +34,6 @@ export const getAllAuthors = async () => {
 
 export const getAuthor = async (id) => {
 
-
     const query = `
     
     {
@@ -114,7 +113,6 @@ export const updateAuthor = async (id, name) => {
 }
 
 export const deleteAuthor = async (id) => {
-
 
     const query = `
   

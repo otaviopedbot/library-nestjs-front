@@ -58,7 +58,10 @@ const EditBooks = () => {
         book.author_id,
         book.synopsis,
       );
-      await updateBookCover(id, cover)
+
+      if (cover){
+        await updateBookCover(id, cover)
+      }
 
       toast.success(`Livro ${book.title} editado com sucesso`);
       navigate(`/books/${id}`);

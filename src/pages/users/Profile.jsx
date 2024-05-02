@@ -24,32 +24,30 @@ const Profile = () => {
     confirmButtonText: "Sim, deletar!"
   }
 
-
   useEffect(() => {
-    const test = async () => {
+
       setFavorites(user.user.favorites)
-    };
 
-}, [user]);
+  }, []);
 
-  console.log(favorites)
 
   const removeFavorite = async (userId, bookId) => {
+
     const confirmation = await Swal.fire(configConfirmation);
     if (confirmation.isConfirmed) {
       try {
-        await deleteFavorite(bookId);
-        // Remover o favorito removido da lista de favoritos do estado
-  
-        toast.success(`Favorito removido com sucesso`);
+        await deleteFavorite(userId, bookId);
+
+        toast.success(`Favorito removido com sucesso, entre novamente para ver a mudança`);
       } catch (error) {
         toast.error(`Erro ao remover Favorito`);
         console.log(error);
       }
     }
+
   };
 
-  
+
   return user ? (
 
     <div className='grid grid-cols-1 grid-rows-1 h-screen'>
@@ -69,21 +67,25 @@ const Profile = () => {
           <h1>Meus livros favoritos:</h1>
 
           {favorites.length == 0 ? (
+
             <p>Ainda sem livros favoritos</p>
+
           ) : (
+
             <ul>
-              {favorites.map((favorite) => (
-                <li key={favorite.favorite_id} className="mt-2 max-w space-y-0 text-gray-500 list-disc list-inside dark:text-gray-400">
-                  <Link to={`/books/${favorite.book.id}`}>
+              {user.user.favorites.map((favorite) => (
+                <li key={favorite.id} className="mt-2 max-w space-y-0 text-gray-500 list-disc list-inside dark:text-gray-400">
+                  <Link to={`/books/${favorite.book_id}`}>
                     {favorite.book.title}
                   </Link>
                   <br />
-                  <button className='ml-2 text-red-500' onClick={() => removeFavorite(user.user.id, favorite.book.id)}>
+                  <button className='ml-2 text-red-500' onClick={() => removeFavorite(favorite.user_id, favorite.book_id)}>
                     Apagar
                   </button>
                 </li>
               ))}
             </ul>
+
           )}
 
           <Link to={'/profile/edit'}>

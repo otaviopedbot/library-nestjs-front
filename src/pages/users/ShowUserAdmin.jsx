@@ -42,21 +42,21 @@ const ViewCustomers = () => {
   }, [id]);
 
 
-  const removeCustomer = async () => {
-    const confirmation = await Swal.fire(configConfirmation);
+  // const removeCustomer = async () => {
+  //   const confirmation = await Swal.fire(configConfirmation);
 
-    if (confirmation.isConfirmed) {
-      try {
-        await deleteUser(id);
-        navigate('/users')
-        toast.warn(`Usuário/Cliente ${data.name} removido com sucesso`)
-      } catch (error) {
-        toast.error(error.response.data.message);
-        console.log(error)
-      }
-    }
+  //   if (confirmation.isConfirmed) {
+  //     try {
+  //       await deleteUser(id);
+  //       navigate('/users')
+  //       toast.warn(`Usuário/Cliente ${data.name} removido com sucesso`)
+  //     } catch (error) {
+  //       toast.error(error.response.data.message);
+  //       console.log(error)
+  //     }
+  //   }
 
-  };
+  // };
 
 
   return (
@@ -80,7 +80,6 @@ const ViewCustomers = () => {
           </ul>
 
           {/* botões: */}
-
 
           <Link to={'/users'}>
             <Return />

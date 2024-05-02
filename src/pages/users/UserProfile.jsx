@@ -11,18 +11,23 @@ const Users = () => {
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
+
     const fetchUser = async () => {
+
       try {
         const userData = await getUser(id);
         setUser(userData);
         setFavorites(userData.favorites)
+        console.log(favorites)
       } catch (error) {
         console.error('Erro ao buscar usuário:', error);
         setUser(null);
       }
+
     };
 
     fetchUser();
+
   }, [id]);
 
 
@@ -50,10 +55,12 @@ const Users = () => {
               ))}
             </ul>
           )}
+
           {/* Botões */}
           <Link to={'/'}>
             <Return />
           </Link>
+
         </Card>
 
       </div>

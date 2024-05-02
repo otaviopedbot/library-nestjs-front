@@ -75,9 +75,9 @@ const ViewRents = () => {
               <li>ID: {data.id}</li>
               <li>Criado em: {data.createdAt}</li>
               <li>Atualizado em: {data.updatedAt}</li>
-              <li>ID Cliente: {data.user.id}</li>
+              <li>ID Cliente: {data.user_id}</li>
               <li>Nome do Cliente: {data.user.complete_name}</li>
-              <li>ID Livro: {data.book.id}</li>
+              <li>ID Livro: {data.book_id}</li>
               <li>Título do Livro: {data.book.title}</li>
             </ul>
 

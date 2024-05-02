@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getBook, deleteBook } from '../../requests/book';
-import { deleteReview, updateReview, postReview } from '../../requests/review';
+import { deleteReview, postReview } from '../../requests/review';
 import { postFavorite, deleteFavorite } from '../../requests/favorite';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -124,10 +124,14 @@ const ViewBooks = () => {
   const handleFavorite = async (e) => {
     e.preventDefault()
     try {
+
       setIsLoading(true)
+
       await postFavorite(user.user.id, id)
+
       toast.success(`Livro ${book.title} favoritado com sucesso`);
       setIsLoading(false)
+
     } catch (error) {
 
       const confirmation = await Swal.fire(configConfirmationFavorite);
@@ -253,7 +257,7 @@ const ViewBooks = () => {
 
                           <p>{review.body}</p>
 
-                          {user.user.id === review.user_id && (
+                          {user.user.id == review.user_id && (
                             <span onClick={() => { removeReview(review.id) }}>
                               <Delete size={4} />
                             </span>

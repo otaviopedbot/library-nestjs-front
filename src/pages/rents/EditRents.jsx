@@ -28,8 +28,8 @@ const EditRents = () => {
       try {
         const data = await getRent(id);
         setRent({
-          customer_id: data.customer.id,
-          book_id: data.book.id,
+          customer_id: data.user_id,
+          book_id: data.book_id,
         });
       } catch (error) {
         toast.error(error.response.data.message);
@@ -45,13 +45,21 @@ const EditRents = () => {
     e.preventDefault();
 
     try {
+
       setIsLoading(true);
-      await updateRent(id, rent.customer_id, rent.book_id)
-      toast.success(`Aluguel do Cliente de is ${rent.customer_id} editado com sucesso`);
+
+      await updateRent(id, rent.user_id, rent.book_id)
+      
+      toast.success(`Aluguel do Cliente de is ${rent.user_id} editado com sucesso`);
+
       setIsLoading(false);
+      
       navigate(`/rents/${id}`);
+
     } catch (error) {
-      toast.error(error.response.data.message);
+
+      toast.error(error.data.data.message);
+
     } finally {
       setIsLoading(false);
     }

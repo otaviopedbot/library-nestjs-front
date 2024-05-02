@@ -5,61 +5,152 @@ import authHeaderAdmin from "../services/authHeaderAdmin";
 const url = import.meta.env.VITE_APIURL
 
 export const getAllBooks = async (page, pageSize) => {
-    try {
-        let response = ''
-
-        if (page && pageSize) {
-            response = await axios.get(`${url}/books`, { headers: authHeader() });
-        } else {
-            response = await axios.get(`${url}/books`, { headers: authHeader() });
+    const query = `
+    
+    {
+        listBooks{
+            id
+            title
+            author_id
+            page
+            quantity
         }
+    }
+    
+    `
 
-        return response.data
+    try {
+
+        const response = await axios.post(url, { query }, {
+            headers: authHeader(),
+            "Content-Type": "application/json"
+        });
+
+        return response.data.data.listBooks
     } catch (error) {
-        console.log(error);
+        console.log(error)
         throw error;
     }
 };
 
 export const getBook = async (id) => {
+    const query = `
+    
+    {
+        showBook(id: ${id}){
+            id
+            title
+            cover
+            quantity
+            synopsis
+            page
+            author_id
+            author{
+                name
+            }
+            reviews{
+                id
+                user_id
+                book_id
+                body
+                rating
+                user{
+                    username
+                }
+            }
+        }
+    }
+    
+    `
+
     try {
-        const response = await axios.get(`${url}/books/${id}`, { headers: authHeader() });
-        return response.data;
+        const response = await axios.post(url, { query },
+            {
+                headers: authHeader(),
+                "Content-Type": "application/json"
+            });
+
+        return response.data.data.showBook;
+
     } catch (error) {
-        console.log(error);
         throw error;
     }
 };
 
 export const postBook = async (title, page, quantity, author_id, synopsis) => {
+
+    const query = `
+  
+    mutation PostBook($title: String!, $page: Float!, $quantity: Float!, $author_id: Float!, $synopsis: String!){
+      createBook(data: {
+        title: $title
+        page: $page
+        quantity: $quantity
+        author_id: $author_id
+        synopsis: $synopsis
+      }){
+        id
+      }
+    }
+  
+    `;
+
+    const variables = {
+        title,
+        page: parseInt(page),
+        quantity: parseInt(quantity),
+        author_id: parseInt(author_id),
+        synopsis
+    }
+
     try {
-        await axios.post(`${url}/books`, {
-            'title': title,
-            'page': Number(page),
-            'quantity': Number(quantity),
-            'author_id': Number(author_id),
-            'synopsis': synopsis,
-        }, { headers: authHeaderAdmin() });
+       const repsonse = await axios.post(url, { query, variables }, { headers: authHeaderAdmin() });
+
+        console.log(repsonse)
+
     } catch (error) {
-        console.log(error);
+        console.log(error)
         throw error;
     }
 };
 
 export const updateBook = async (id, title, page, quantity, author_id, synopsis) => {
-    try {
-        await axios.patch(`${url}/books/${id}`, {
-            title,
-            page: Number(page),
-            quantity: Number(quantity),
-            synopsis,
-            author_id: Number(author_id),
-        }, { headers: authHeaderAdmin() });
-    } catch (error) {
-        console.log(error);
-        throw error;
+
+    const query = `
+  
+    mutation UpdateBook( $id: Float!, $title: String, $page: Float, $quantity: Float, $author_id: Float, $synopsis: String){
+      updatePartialBook(id: $id, data: {
+        title: $title
+        page: $page
+        quantity: $quantity
+        author_id: $author_id
+        synopsis: $synopsis
+      }){
+        title
+        page
+        quantity
+        author_id
+        synopsis
+      }
+    }
+  
+    `;
+
+    const variables = {
+        id: parseInt(id),
+        title,
+        page : parseInt(page),
+        quantity: parseInt(quantity),
+        author_id: parseInt(author_id),
+        synopsis,
     }
 
+    try {
+        const response = await axios.post(url, { query, variables }, { headers: authHeaderAdmin(),  "Content-Type": "application/json" });
+
+    } catch (error) {
+        throw error;
+    }
 }
 
 export const updateBookCover = async (id, cover) => {
@@ -92,10 +183,23 @@ export const updateBookCover = async (id, cover) => {
 }
 
 export const deleteBook = async (id) => {
+
+    const query = `
+  
+    mutation deleteBook($id: Float!){
+      deleteBook(id: $id)
+    }
+
+    `;
+
+    const variables = {
+        id: parseInt(id),
+    }
+
+
     try {
-        await axios.delete(`${url}/books/${id}`, { headers: authHeaderAdmin() });
+        await axios.post(url, {query, variables},  { headers: authHeaderAdmin() });
     } catch (error) {
-        console.log(error);
         throw error;
     }
 }

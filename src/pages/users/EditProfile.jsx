@@ -29,7 +29,6 @@ const EditProfile = () => {
         confirmButtonText: "Sim, deletar usuário!"
     };
 
-
     const [complete_name, setComplete_name] = useState();
     const [username, setUsername] = useState();
     const [phone, setPhone] = useState();
@@ -38,12 +37,12 @@ const EditProfile = () => {
     const [password, setPassword] = useState();
     const [details, setDetails] = useState();
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             setIsLoading(true);
             await updateUser(id, complete_name, username, phone, address, email, password, details);
+
             if (image){
                 await updateUserImage(id, image);
             }
